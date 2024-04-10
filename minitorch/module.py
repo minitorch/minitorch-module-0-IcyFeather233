@@ -50,13 +50,15 @@ class Module:
             The name and `Parameter` of each ancestor parameter.
         """
         res = []
+
         def recursive(name: str, node: Module):
-            prefix = name + '.' if name else ''
+            prefix = name + "." if name else ""
             for k, v in node._parameters.items():
                 res.append((prefix + k, v))
             for k, v in node._modules.items():
                 recursive(prefix + k, v)
-        recursive('', self)
+
+        recursive("", self)
         return res
 
     def parameters(self) -> Sequence[Parameter]:
