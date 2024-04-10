@@ -114,7 +114,6 @@ def inv(x: float) -> float:
     return 1 / x
 
 
-
 def inv_back(x: float, d: float) -> float:
     r"If $f(x) = 1/x$ compute $d \times f'(x)$"
     # TODO: Implement for Task 0.1.
@@ -132,8 +131,7 @@ def relu_back(x: float, d: float) -> float:
 # Small practice library of elementary higher-order functions.
 
 
-def map(
-        fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[float]]:
+def map(fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[float]]:
     """
     Higher-order map.
 
