@@ -30,16 +30,21 @@ class Module:
         return list(m.values())
 
     def train(self) -> None:
-        "Set the mode of this module and all descendent modules to `train`."
+        # TODO: Implement for Task 0.4.
         self.training = True
-        for child in self.modules():
-            child.train()
+        for module in self.modules():
+            if isinstance(module, Module):
+                module.train()
+        # raise NotImplementedError("Need to implement for Task 0.4")
 
     def eval(self) -> None:
         "Set the mode of this module and all descendent modules to `eval`."
+        # TODO: Implement for Task 0.4.
         self.training = False
-        for child in self.modules():
-            child.eval()
+        for module in self.modules():
+            # if isinstance(module, Module):
+            module.eval()
+        # raise NotImplementedError("Need to implement for Task 0.4")
 
     def named_parameters(self) -> Sequence[Tuple[str, Parameter]]:
         """
@@ -49,21 +54,34 @@ class Module:
         Returns:
             The name and `Parameter` of each ancestor parameter.
         """
-        res = []
-
-        def recursive(name: str, node: Module):
-            prefix = name + "." if name else ""
-            for k, v in node._parameters.items():
-                res.append((prefix + k, v))
-            for k, v in node._modules.items():
-                recursive(prefix + k, v)
-
-        recursive("", self)
-        return res
+        # named_params = {}
+        # for module_name, module in self._modules.items():
+        #     for name, nested_module in module.named_parameters().items():
+        #         named_params[f"{module_name}.{name}"] = nested_module
+        # for param_name, param in self._parameters.items():
+        #     named_params[param_name] = param
+        # return named_params
+        # TODO: Implement for Task 0.4.
+        # raise NotImplementedError("Need to implement for Task 0.4")
+        named_params = []
+        for module_name, module in self._modules.items():
+            for name, nested_param in module.named_parameters():
+                named_params.append((f"{module_name}.{name}", nested_param))
+        for param_name, param in self._parameters.items():
+            named_params.append((param_name, param))
+        return named_params
 
     def parameters(self) -> Sequence[Parameter]:
         "Enumerate over all the parameters of this module and its descendents."
-        return [v for (_, v) in self.named_parameters()]
+        # TODO: Implement for Task 0.4.
+        # return self.named_parameters().values()
+        # return self.named_parameters().values()
+        # raise NotImplementedError("Need to implement for Task 0.4")
+        # return [param for _, param in self.named_parameters()]
+        params = []
+        for _, param in self.named_parameters():
+            params.append(param)
+        return params
 
     def add_parameter(self, k: str, v: Any) -> Parameter:
         """
@@ -129,9 +147,9 @@ class Module:
 
 class Parameter:
     """
-    A Parameter is a special container stored in a :class:`Module`.
+    A Parameter is a special container stored in a `Module`.
 
-    It is designed to hold a :class:`Variable`, but we allow it to hold
+    It is designed to hold a `Variable`, but we allow it to hold
     any value for testing.
     """
 
