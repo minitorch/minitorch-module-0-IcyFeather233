@@ -30,14 +30,18 @@ class Module:
         return list(m.values())
 
     def train(self) -> None:
-        "Set the mode of this module and all descendent modules to `train`."
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        self.training = True
+        for module in self.modules():
+            if isinstance(module, Module):
+                module.train()
 
     def eval(self) -> None:
         "Set the mode of this module and all descendent modules to `eval`."
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        self.training = False
+        for module in self.modules():
+            module.eval()
 
     def named_parameters(self) -> Sequence[Tuple[str, Parameter]]:
         """
@@ -48,12 +52,21 @@ class Module:
             The name and `Parameter` of each ancestor parameter.
         """
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        named_params = []
+        for module_name, module in self._modules.items():
+            for name, nested_param in module.named_parameters():
+                named_params.append((f"{module_name}.{name}", nested_param))
+        for param_name, param in self._parameters.items():
+            named_params.append((param_name, param))
+        return named_params
 
     def parameters(self) -> Sequence[Parameter]:
         "Enumerate over all the parameters of this module and its descendents."
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        params = []
+        for _, param in self.named_parameters():
+            params.append(param)
+        return params
 
     def add_parameter(self, k: str, v: Any) -> Parameter:
         """
@@ -119,9 +132,9 @@ class Module:
 
 class Parameter:
     """
-    A Parameter is a special container stored in a :class:`Module`.
+    A Parameter is a special container stored in a `Module`.
 
-    It is designed to hold a :class:`Variable`, but we allow it to hold
+    It is designed to hold a `Variable`, but we allow it to hold
     any value for testing.
     """
 
